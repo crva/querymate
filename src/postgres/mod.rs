@@ -1,10 +1,20 @@
-use sqlx::Connection;
+use sqlx::Row;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+pub async fn connect() -> Result<(), Box<dyn std::error::Error>> {
     let url = "postgres://postgres:root@localhost/crva";
-    let mut conn = sqlx::postgres::PgPool::connect(url).await?;
+    let pool = sqlx::postgres::PgPool::connect(url).await?;
 
-    println!("Connected!");
+    let rows = sqlx::query(
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'",
+    )
+    .fetch_all(&pool)
+    .await?;
+
+    for row in rows {
+        let table_name: &str = row.get("table_name");
+        println!("{}", table_name);
+    }
+
     Ok(())
 }

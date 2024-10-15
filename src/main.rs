@@ -1,5 +1,5 @@
-mod ai;
 use config::Config;
+use querymate::postgres;
 use std::collections::HashMap;
 
 fn main() {
@@ -14,4 +14,6 @@ fn main() {
             .try_deserialize::<HashMap<String, String>>()
             .unwrap()
     );
+
+    postgres::connect().unwrap();
 }
