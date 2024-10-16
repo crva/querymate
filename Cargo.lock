@@ -1289,10 +1289,12 @@ dependencies = [
 name = "querymate"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "config",
  "config-file",
  "postgres",
  "reqwest",
+ "serde_json",
  "sqlx",
  "tokio",
  "tokio-macros",
