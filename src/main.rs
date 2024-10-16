@@ -1,8 +1,6 @@
 use config::Config;
 use querymate::postgres;
-mod ai;
-use ai::{AI, Claude};
-use config::Config;
+use querymate::ai::{AI, Claude};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -11,7 +9,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()
         .unwrap();
 
-    postgres::connect().unwrap();
+    // postgres::connect().unwrap();
     let db_schema = r#"
     CREATE TABLE users (
         id INT PRIMARY KEY,
