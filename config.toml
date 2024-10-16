@@ -1,5 +1,0 @@
-claude_api_key = ""
-postgres_username = "postgres"
-postgres_password = "secretpassword"
-postgres_dbname = "cedric"
-postgres_ip = "localhost"
