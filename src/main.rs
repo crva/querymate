@@ -4,15 +4,15 @@ use querymate::postgres;
 
 #[tokio::main]
 async fn main() {
-    connect_to_postgres().await.unwrap()
-}
-
-async fn connect_to_postgres() -> Result<(), Box<dyn std::error::Error>> {
     let settings: Config = Config::builder()
         .add_source(config::File::with_name("config.toml"))
         .build()
         .unwrap();
 
+    connect_to_postgres(settings).await.unwrap()
+}
+
+async fn request_claude(settings: Config) -> Result<(), Box<dyn std::error::Error>> {
     // postgres::connect().unwrap();
     let db_schema = r#"
     CREATE TABLE users (
@@ -55,7 +55,13 @@ async fn connect_to_postgres() -> Result<(), Box<dyn std::error::Error>> {
     let response = claude
         .generate_response("Show me all users who have placed orders totaling more than $1000")
         .await?;
+
     println!("Generated SQL Query:\n{}", response);
+
+    Ok(())
+}
+
+async fn connect_to_postgres(settings: Config) -> Result<(), Box<dyn std::error::Error>> {
     let username = settings
         .clone()
         .get_string("postgres_username")
